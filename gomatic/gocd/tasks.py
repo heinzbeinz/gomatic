@@ -14,7 +14,7 @@ def Task(element):
         return ExecTask(command_and_args, working_dir, runif)
     if element.tag == "fetchartifact":
         dest = element.attrib.get('dest', None)
-        origin = element.attrib.get('origin', None)
+        origin = element.attrib.get('artifactOrigin', None)
         return FetchArtifactTask(
             element.attrib['pipeline'], element.attrib['stage'],
             element.attrib['job'], fetch_artifact_src_from(element),
@@ -95,7 +95,7 @@ class FetchArtifactTask(AbstractTask):
 
         origin_parameter = ""
         if self.__origin is not None:
-            origin_parameter = ' origin="%s"' % self.__origin
+            origin_parameter = ' artifactOrigin="%s"' % self.__origin
 
         new_element = ET.fromstring(
             ('<fetchartifact pipeline="%s" stage="%s" job="%s" %s="%s"' % (self.__pipeline, self.__stage, self.__job, src_type, src_value)) + dest_parameter + origin_parameter + '/>')
